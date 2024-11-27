@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "OnlineSubsystem.h"
 #include "GameFramework/Character.h"
+#include "Interfaces/OnlineSessionDelegates.h"
 #include "Logging/LogMacros.h"
+#include "Interfaces/OnlineSessionInterface.h"
 #include "MenuSystemCharacter.generated.h"
 
 class USpringArmComponent;
@@ -72,7 +74,20 @@ public:
 
 public:
 	// Pointe to the online session interface
-	//IOnlineSessionPtr OnlineSessionInterface;
-	TSharedPtr<class IOnlineSession, ESPMode::ThreadSafe> OnlineSessionInterface;
+	IOnlineSessionPtr OnlineSessionInterface;
+	//TSharedPtr<class IOnlineSession, ESPMode::ThreadSafe> OnlineSessionInterface;
+
+protected:
+	UFUNCTION(BlueprintCallable)
+	void CreateGameSession();
+
+	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+private:
+	
+	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
+	/*
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCreateSessionComplete, FName, bool);
+	typedef FOnCreateSessionComplete::FDelegate FOnCreateSessionCompleteDelegate;
+	*/
 };
 

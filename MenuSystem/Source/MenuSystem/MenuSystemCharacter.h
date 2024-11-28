@@ -69,9 +69,7 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 public:
-	// Pointe to the online session interface
-	IOnlineSessionPtr OnlineSessionInterface;
-	//TSharedPtr<class IOnlineSession, ESPMode::ThreadSafe> OnlineSessionInterface;
+	IOnlineSessionPtr OnlineSessionInterface;	// Pointe to the online session interface
 
 protected:
 	UFUNCTION(BlueprintCallable)
@@ -80,11 +78,15 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void JoinGameSession();
 
+	// Callback Function
 	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
 	void OnFindSessionComplete(bool bWasSuccessful);
-
+	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+	
 private:
+	// Delegate
 	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
 	FOnFindSessionsCompleteDelegate FindSessionCompleteDelegate;
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+	FOnJoinSessionCompleteDelegate JoinSessionCompleteDelegate;
 };

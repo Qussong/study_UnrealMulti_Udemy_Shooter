@@ -75,16 +75,31 @@ DerivedDataCache/*
 
 # Customs
 
+# MPTesting Project
 MPTesting/**
-MenuSystem/**
 
-!MPTesting/Config
-!MPTesting/Content
-!MPTesting/Source
+!MPTesting/Config/
+!MPTesting/Content/
+!MPTesting/Source/
+
+!MPTesting/Config/**
+!MPTesting/Content/**
+!MPTesting/Source/**
 !MPTesting/MPTesting.uproject
 
-!MenuSystem/Config
-!MenuSystem/Content
-!MenuSystem/Source
+# MenuSystem Project
+MenuSystem/**
+
+!MenuSystem/Config/
+!MenuSystem/Content/
+!MenuSystem/Source/
+!MenuSystem/Plugins/
+
+!MenuSystem/Config/**
+!MenuSystem/Content/**
+!MenuSystem/Source/**
+!MenuSystem/Plugins/**
 !MenuSystem/MenuSystem.uproject
-!MenuSystem/Plugins
+
+MenuSystem/Plugins/MultiplayerSessions/Binaries
+MenuSystem/Plugins/MultiplayerSessions/Intermediate

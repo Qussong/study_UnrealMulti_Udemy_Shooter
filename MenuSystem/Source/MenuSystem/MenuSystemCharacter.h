@@ -30,7 +30,7 @@ class AMenuSystemCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
-	
+
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
@@ -49,19 +49,15 @@ class AMenuSystemCharacter : public ACharacter
 
 public:
 	AMenuSystemCharacter();
-	
 
 protected:
-
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
 
 protected:
-
 	virtual void NotifyControllerChanged() override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -81,13 +77,14 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void CreateGameSession();
 
-	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
-private:
-	
-	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
-	/*
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCreateSessionComplete, FName, bool);
-	typedef FOnCreateSessionComplete::FDelegate FOnCreateSessionCompleteDelegate;
-	*/
-};
+	UFUNCTION(BlueprintCallable)
+	void JoinGameSession();
 
+	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+	void OnFindSessionComplete(bool bWasSuccessful);
+
+private:
+	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
+	FOnFindSessionsCompleteDelegate FindSessionCompleteDelegate;
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+};

@@ -75,5 +75,16 @@ DerivedDataCache/*
 
 # Customs
 
-MPTesting/
-MenuSystem/
+MPTesting/**
+MenuSystem/**
+
+!MPTesting/Config
+!MPTesting/Content
+!MPTesting/Source
+!MPTesting/MPTesting.uproject
+
+!MenuSystem/Config
+!MenuSystem/Content
+!MenuSystem/Source
+!MenuSystem/MenuSystem.uproject
+!MenuSystem/Plugins

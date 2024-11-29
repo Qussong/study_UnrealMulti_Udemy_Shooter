@@ -54,6 +54,7 @@ void UMultiplayerSessionsSubsystem::CreateSession(int32 NumPublicConnections, FS
 		LastSessionSettings->Set(FName("MatchType")
 		                         , FString("FreeForAll")
 		                         , EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+		LastSessionSettings->BuildUniqueId = 1;
 	}
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
@@ -110,6 +111,7 @@ void UMultiplayerSessionsSubsystem::JoinSession(const FOnlineSessionSearchResult
 	FOnlineSessionSearchResult ModifiableSessionResult = SessionResult;
 	ModifiableSessionResult.Session.SessionSettings.bUseLobbiesIfAvailable = true;
 	ModifiableSessionResult.Session.SessionSettings.bUsesPresence = true;
+	//ModifiableSessionResult.Session.SessionSettings.BuildUniqueId = 1;
 	/* Issue End */
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();

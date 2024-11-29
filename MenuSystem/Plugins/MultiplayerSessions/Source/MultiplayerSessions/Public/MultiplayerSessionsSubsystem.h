@@ -42,7 +42,7 @@ protected:
 private:
 	IOnlineSessionPtr SessionInterface;
 	// typedef TSharedPtr<IOnlineSession, ESPMode::ThreadSafe> IOnlineSessionPtr;
-
+	TSharedPtr<FOnlineSessionSettings> LastSessionSettings;
 	//
 	// To add to the Online Session Interface delegate list.
 	// We'll bind our MultiplayerSessionSubsystem internal callbacks to there.

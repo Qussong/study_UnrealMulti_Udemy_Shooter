@@ -146,7 +146,8 @@ void AMenuSystemCharacter::CreateGameSession()
 		SessionSettings->bShouldAdvertise = true;
 		SessionSettings->bUsesPresence = true;
 		SessionSettings->bUseLobbiesIfAvailable = true;
-		SessionSettings->Set(FName("MatchType"), FString("FreeForAll"),
+		SessionSettings->Set(FName("MatchType")
+		                     , FString("FreeForAll"),
 		                     EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	}
 
@@ -256,8 +257,8 @@ void AMenuSystemCharacter::OnJoinSessionComplete(FName SessionName, EOnJoinSessi
 			                                 FString::Printf(TEXT("Connect String: %s"), *Address));
 		}
 	}
-	
-#pragma region Try To Find Join Seesion Error 
+
+#pragma region Try To Find Join Seesion Error
 	/*
 	{
 		if (GEngine)

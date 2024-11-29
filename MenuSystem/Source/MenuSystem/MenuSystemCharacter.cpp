@@ -12,7 +12,7 @@
 #include "InputActionValue.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
-#include "Online/OnlineSessionNames.h"
+#include "Online/OnlineSessionNames.h"	// LastSessionSearch
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -310,7 +310,7 @@ void AMenuSystemCharacter::OnJoinSessionComplete(FName SessionName, EOnJoinSessi
 	*/
 #pragma endregion
 
-	APlayerController* PlayerController = GetGameInstance()->GetPrimaryPlayerController();
+	APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController();	// GetPrimaryPlayerController();
 	if (PlayerController)
 	{
 		PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);

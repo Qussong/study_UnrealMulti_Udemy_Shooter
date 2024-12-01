@@ -1,8 +1,0 @@
-{
-	"SourceFiles": [
-		"D:\\Unreal Project\\study_UnrealMulti_Udemy_Shooter\\Blaster\\Source\\Blaster\\Blaster.Build.cs",
-		"D:\\Unreal Project\\study_UnrealMulti_Udemy_Shooter\\Blaster\\Source\\Blaster.Target.cs",
-		"D:\\Unreal Project\\study_UnrealMulti_Udemy_Shooter\\Blaster\\Source\\BlasterEditor.Target.cs"
-	],
-	"EngineVersion": "5.5.0"
-}

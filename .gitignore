@@ -110,14 +110,16 @@ Blaster/**
 
 !Blaster/Config/
 !Blaster/Content/
+!Blaster/Content/_Blaster/
 !Blaster/Source/
 !Blaster/Plugins/
 
 !Blaster/Config/**
-!Blaster/Content/**
+!Blaster/Content/_Blaster/**
 !Blaster/Source/**
 !Blaster/Plugins/**
 !Blaster/MenuSystem.uproject
 
 Blaster/Plugins/MultiplayerSessions/Binaries
 Blaster/Plugins/MultiplayerSessions/Intermediate
+

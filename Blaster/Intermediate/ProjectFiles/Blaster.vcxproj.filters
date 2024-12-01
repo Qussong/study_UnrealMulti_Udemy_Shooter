@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\Blaster.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Blaster.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\BlasterEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\Blaster">
+      <UniqueIdentifier>{EE28103A-87BB-3197-B9AF-A82E99E2013A}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Blaster\Blaster.Build.cs">
+      <Filter>Source\Blaster</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\Blaster\Blaster.cpp">
+      <Filter>Source\Blaster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Blaster\Blaster.h">
+      <Filter>Source\Blaster</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -11,6 +11,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class UWidgetComponent;
 
 UCLASS()
 class BLASTER_API ABlasterCharacter : public ACharacter
@@ -32,8 +33,8 @@ private:
 	UPROPERTY(VisibleAnywhere, Category="Camera")
 	TObjectPtr<UCameraComponent> FollowCamera;
 
-public:
-	// Getter, Setter Section
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UWidgetComponent> OverheadWidget;
 
 private:
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -52,5 +53,4 @@ private:
 	void Look(const FInputActionValue& InputActionValue);
 	virtual void Jump() override;
 	virtual void StopJumping() override;
-	
 };

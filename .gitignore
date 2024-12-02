@@ -120,6 +120,8 @@ Blaster/**
 !Blaster/Plugins/**
 !Blaster/MenuSystem.uproject
 
+Blaster/Content/_Blaster/Maps/
+
 Blaster/Plugins/MultiplayerSessions/Binaries
 Blaster/Plugins/MultiplayerSessions/Intermediate
 

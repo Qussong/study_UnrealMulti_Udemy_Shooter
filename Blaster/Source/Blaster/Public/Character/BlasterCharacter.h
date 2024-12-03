@@ -49,9 +49,6 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCombatComponent> Combat;
 
-public:
-	void SetOverlappingWeapon(AWeapon* Weapon);
-
 private:
 	/* Input Secion */
 	
@@ -78,4 +75,8 @@ private:
 
 	UFUNCTION(Server, Reliable)
 	void ServerEquipButtonPressed();
+
+public:
+	void SetOverlappingWeapon(AWeapon* Weapon);
+	bool IsWeaponEquipped();
 };

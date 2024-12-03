@@ -57,7 +57,6 @@ void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	//DOREPLIFETIME(ABlasterCharacter, OverlappingWeapon);
 	DOREPLIFETIME_CONDITION(ABlasterCharacter, OverlappingWeapon, COND_OwnerOnly);
 }
 
@@ -171,19 +170,6 @@ void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
 	Combat->EquipWeapon(OverlappingWeapon);
 }
 
-void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
-{
-	if (nullptr != OverlappingWeapon)
-	{
-		OverlappingWeapon->ShowPickupWidget(true);
-	}
-
-	if (nullptr != LastWeapon)
-	{
-		LastWeapon->ShowPickupWidget(false);
-	}
-}
-
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 {
 	if (nullptr != OverlappingWeapon)
@@ -200,3 +186,22 @@ void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 		}
 	}
 }
+
+void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
+{
+	if (nullptr != OverlappingWeapon)
+	{
+		OverlappingWeapon->ShowPickupWidget(true);
+	}
+
+	if (nullptr != LastWeapon)
+	{
+		LastWeapon->ShowPickupWidget(false);
+	}
+}
+
+bool ABlasterCharacter::IsWeaponEquipped()
+{
+	return (nullptr != Combat && nullptr != Combat->EquippedWeapon);
+}
+

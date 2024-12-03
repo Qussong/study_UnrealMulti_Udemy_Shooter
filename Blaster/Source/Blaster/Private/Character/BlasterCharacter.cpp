@@ -45,7 +45,6 @@ ABlasterCharacter::ABlasterCharacter()
 
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
 	OverheadWidget->SetupAttachment(RootComponent);
-	//OverheadWidget->SetWidgetSpace(EWidgetSpace::Screen);
 	OverheadWidget->SetWidgetSpace(EWidgetSpace::World);
 }
 

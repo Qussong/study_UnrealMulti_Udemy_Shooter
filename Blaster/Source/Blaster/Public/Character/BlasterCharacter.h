@@ -75,4 +75,7 @@ private:
 	void Equip(const FInputActionValue& InputActionValue);
 	
 	/* Input Secion End */
+
+	UFUNCTION(Server, Reliable)
+	void ServerEquipButtonPressed();
 };

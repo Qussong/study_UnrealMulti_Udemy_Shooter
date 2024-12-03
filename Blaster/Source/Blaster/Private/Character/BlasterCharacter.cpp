@@ -18,7 +18,7 @@
 ABlasterCharacter::ABlasterCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -153,13 +153,22 @@ void ABlasterCharacter::Equip(const FInputActionValue& InputActionValue)
 {
 	bool bPressed = InputActionValue.Get<bool>();
 
-	if (bPressed)
+	if (bPressed  && nullptr != Combat)
 	{
 		if (HasAuthority())
 		{
 			Combat->EquipWeapon(OverlappingWeapon);
 		}
+		else
+		{
+			ServerEquipButtonPressed();
+		}
 	}
+}
+
+void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
+{
+	Combat->EquipWeapon(OverlappingWeapon);
 }
 
 void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)

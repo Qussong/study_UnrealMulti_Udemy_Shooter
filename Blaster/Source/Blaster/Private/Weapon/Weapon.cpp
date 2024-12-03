@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Character/BlasterCharacter.h"
+#include "Net/UnrealNetwork.h"
 
 AWeapon::AWeapon()
 {
@@ -61,7 +62,7 @@ void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 }
 
 void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
 	if (nullptr != BlasterCharacter)
@@ -70,10 +71,44 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	}
 }
 
+void AWeapon::OnRep_WeaponState()
+{
+	// Client Logic
+	switch (WeaponState)
+	{
+	case EWeaponState::EWS_Equipped:
+		{
+			ShowPickupWidget(false);
+		}
+		break;
+	}
+}
+
+void AWeapon::SetWeaponState(EWeaponState State)
+{
+	// Server Logic
+	WeaponState = State;
+	switch (WeaponState)
+	{
+	case EWeaponState::EWS_Equipped:
+		ShowPickupWidget(false);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		break;
+	}
+}
+
 void AWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AWeapon, WeaponState);
+}
+
 
 void AWeapon::ShowPickupWidget(bool bShowWidget)
 {

@@ -4,14 +4,14 @@
 #include "Character/BlasterCharacter.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
-
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Components/WidgetComponent.h"
+#include "Net/UnrealNetwork.h"
+#include "Weapon/Weapon.h"
 
 ABlasterCharacter::ABlasterCharacter()
 {
@@ -20,7 +20,7 @@ ABlasterCharacter::ABlasterCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-	
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 350.0f, 0.0f);
@@ -36,7 +36,7 @@ ABlasterCharacter::ABlasterCharacter()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	//CameraBoom->SetRelativeLocation(FVector(0.f, 40.f, 60.f));
-	CameraBoom->TargetArmLength = 300.f;
+	CameraBoom->TargetArmLength = 500.f;
 	CameraBoom->bUsePawnControlRotation = true;
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -48,6 +48,14 @@ ABlasterCharacter::ABlasterCharacter()
 	OverheadWidget->SetWidgetSpace(EWidgetSpace::Screen);
 }
 
+void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	//DOREPLIFETIME(ABlasterCharacter, OverlappingWeapon);
+	DOREPLIFETIME_CONDITION(ABlasterCharacter, OverlappingWeapon, COND_OwnerOnly);
+}
+
 void ABlasterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -56,6 +64,11 @@ void ABlasterCharacter::BeginPlay()
 void ABlasterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	/*if (nullptr != OverlappingWeapon)
+	{
+		OverlappingWeapon->ShowPickupWidget(true);
+	}*/
 }
 
 void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -131,4 +144,34 @@ void ABlasterCharacter::Jump()
 void ABlasterCharacter::StopJumping()
 {
 	Super::StopJumping();
+}
+
+void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
+{
+	if (nullptr != OverlappingWeapon)
+	{
+		OverlappingWeapon->ShowPickupWidget(true);
+	}
+
+	if (nullptr != LastWeapon)
+	{
+		LastWeapon->ShowPickupWidget(false);
+	}
+}
+
+void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
+{
+	if (nullptr != OverlappingWeapon)
+	{
+		OverlappingWeapon->ShowPickupWidget(false);
+	}
+	
+	OverlappingWeapon = Weapon;
+	if (IsLocallyControlled())
+	{
+		if (nullptr != OverlappingWeapon)
+		{
+			OverlappingWeapon->ShowPickupWidget(true);
+		}
+	}
 }

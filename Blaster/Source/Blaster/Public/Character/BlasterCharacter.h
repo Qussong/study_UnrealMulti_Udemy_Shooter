@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class UCombatComponent;
 class AWeapon;
 class USpringArmComponent;
 class UCameraComponent;
@@ -24,6 +25,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PostInitializeComponents() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -43,11 +45,16 @@ private:
 
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
-	
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCombatComponent> Combat;
+
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
 
 private:
+	/* Input Secion */
+	
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
 
@@ -60,8 +67,12 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> LookAction;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> EquipAction;
+	
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
-	virtual void Jump() override;
-	virtual void StopJumping() override;
+	void Equip(const FInputActionValue& InputActionValue);
+	
+	/* Input Secion End */
 };

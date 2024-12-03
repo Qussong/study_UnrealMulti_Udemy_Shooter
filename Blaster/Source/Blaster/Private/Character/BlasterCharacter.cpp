@@ -9,9 +9,11 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "BlasterComponents/CombatComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Weapon/Weapon.h"
+#include "BlasterComponents/CombatComponent.h"
 
 ABlasterCharacter::ABlasterCharacter()
 {
@@ -46,6 +48,9 @@ ABlasterCharacter::ABlasterCharacter()
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
 	OverheadWidget->SetupAttachment(RootComponent);
 	OverheadWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+	Combat->SetIsReplicated(true);
 }
 
 void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -64,11 +69,6 @@ void ABlasterCharacter::BeginPlay()
 void ABlasterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	/*if (nullptr != OverlappingWeapon)
-	{
-		OverlappingWeapon->ShowPickupWidget(true);
-	}*/
 }
 
 void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -97,6 +97,19 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Look);
+
+		// Equip
+		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Equip);
+	}
+}
+
+void ABlasterCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (nullptr != Combat)
+	{
+		Combat->Character = this;
 	}
 }
 
@@ -136,14 +149,17 @@ void ABlasterCharacter::Look(const FInputActionValue& InputActionValue)
 	}
 }
 
-void ABlasterCharacter::Jump()
+void ABlasterCharacter::Equip(const FInputActionValue& InputActionValue)
 {
-	Super::Jump();
-}
+	bool bPressed = InputActionValue.Get<bool>();
 
-void ABlasterCharacter::StopJumping()
-{
-	Super::StopJumping();
+	if (bPressed)
+	{
+		if (HasAuthority())
+		{
+			Combat->EquipWeapon(OverlappingWeapon);
+		}
+	}
 }
 
 void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
@@ -165,7 +181,7 @@ void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 	{
 		OverlappingWeapon->ShowPickupWidget(false);
 	}
-	
+
 	OverlappingWeapon = Weapon;
 	if (IsLocallyControlled())
 	{

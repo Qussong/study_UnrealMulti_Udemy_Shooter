@@ -67,9 +67,13 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> EquipAction;
 	
-	void Move(const FInputActionValue& InputActionValue);
-	void Look(const FInputActionValue& InputActionValue);
-	void Equip(const FInputActionValue& InputActionValue);
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> CrouchAction;
+	
+	void IA_Move(const FInputActionValue& InputActionValue);
+	void IA_Look(const FInputActionValue& InputActionValue);
+	void IA_Equip(const FInputActionValue& InputActionValue);
+	void IA_Crouch(const FInputActionValue& InputActionValue);
 	
 	/* Input Secion End */
 

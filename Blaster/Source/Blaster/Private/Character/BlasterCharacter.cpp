@@ -18,7 +18,7 @@
 ABlasterCharacter::ABlasterCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -34,6 +34,7 @@ ABlasterCharacter::ABlasterCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 	GetCharacterMovement()->SetWalkableFloorAngle(60.f);
+	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -45,9 +46,9 @@ ABlasterCharacter::ABlasterCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 
-	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
-	OverheadWidget->SetupAttachment(RootComponent);
-	OverheadWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	//OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
+	//OverheadWidget->SetupAttachment(RootComponent);
+	//OverheadWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	Combat->SetIsReplicated(true);
@@ -92,13 +93,16 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::IA_Move);
 
 		// Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Look);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::IA_Look);
 
 		// Equip
-		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Equip);
+		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::IA_Equip);
+
+		// Crouch
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::IA_Crouch);
 	}
 }
 
@@ -112,7 +116,7 @@ void ABlasterCharacter::PostInitializeComponents()
 	}
 }
 
-void ABlasterCharacter::Move(const FInputActionValue& InputActionValue)
+void ABlasterCharacter::IA_Move(const FInputActionValue& InputActionValue)
 {
 	// input is a Vector2D
 	FVector2D MovementVector = InputActionValue.Get<FVector2D>();
@@ -135,7 +139,7 @@ void ABlasterCharacter::Move(const FInputActionValue& InputActionValue)
 	}
 }
 
-void ABlasterCharacter::Look(const FInputActionValue& InputActionValue)
+void ABlasterCharacter::IA_Look(const FInputActionValue& InputActionValue)
 {
 	// input is a Vector2D
 	FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
@@ -148,11 +152,11 @@ void ABlasterCharacter::Look(const FInputActionValue& InputActionValue)
 	}
 }
 
-void ABlasterCharacter::Equip(const FInputActionValue& InputActionValue)
+void ABlasterCharacter::IA_Equip(const FInputActionValue& InputActionValue)
 {
 	bool bPressed = InputActionValue.Get<bool>();
 
-	if (bPressed  && nullptr != Combat)
+	if (bPressed && nullptr != Combat)
 	{
 		if (HasAuthority())
 		{
@@ -161,6 +165,22 @@ void ABlasterCharacter::Equip(const FInputActionValue& InputActionValue)
 		else
 		{
 			ServerEquipButtonPressed();
+		}
+	}
+}
+
+void ABlasterCharacter::IA_Crouch(const FInputActionValue& InputActionValue)
+{
+	bool bPressed = InputActionValue.Get<bool>();
+	if (true == bPressed)
+	{
+		if (bIsCrouched)
+		{
+			UnCrouch();
+		}
+		else
+		{
+			Crouch();
 		}
 	}
 }
@@ -204,4 +224,3 @@ bool ABlasterCharacter::IsWeaponEquipped()
 {
 	return (nullptr != Combat && nullptr != Combat->EquippedWeapon);
 }
-

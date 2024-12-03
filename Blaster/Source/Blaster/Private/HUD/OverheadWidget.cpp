@@ -15,7 +15,7 @@ void UOverheadWidget::SetDisplayText(FString TextToDisplay)
 
 void UOverheadWidget::ShowPlayerNetRole(APawn* InPawn)
 {
-	ENetRole Role = InPawn->GetLocalRole(); 
+	ENetRole Role = InPawn->GetLocalRole();
 	//ENetRole Role = InPawn->GetRemoteRole();
 	FString RoleString;
 	switch (Role)

@@ -22,7 +22,7 @@ public:
 	void SetDisplayText(FString TextToDisplay);
 
 	UFUNCTION(BlueprintCallable)
-	void ShowPlayerNetRole(APawn* InPawn);
+	void ShowPlayerNetRole(APawn* InPawn); // 폰트 크기 설정
 
 protected:
 	virtual void NativeConstruct() override; // OnLevelRemovedFromWorld

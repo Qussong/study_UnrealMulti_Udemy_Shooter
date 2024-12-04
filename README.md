@@ -39,10 +39,6 @@ $\color{#4F4F4F}(\ ↓ 이미지\ 클릭시\ 해당\ 페이지로\ 이동합니�
 </br>
 -->
 
-### $\large\bf\color{#CD5C5C}프로젝트\ 명$
-
-Blaster
-
 ### $\large\bf\color{#CD5C5C}프로젝트\ 인원$
 
 1명 (김기훈)
@@ -50,6 +46,6 @@ Blaster
 ### $\large\bf\color{#CD5C5C}목적$
 
 ① Unreal Engine5 의 활용법 학습</br>
-② 게임 엔진의 구조와 흐름에 대한 이해</br>
-③ Unreal Blueprint 와 Unreal C++ 의 활용 능력의 향상</br>
-④ 기능 구현 및 응용 능력 향상</br>
+② 스팀을 활용한 멀티 환경 게임 제작</br>
+③ 블루프린트와 Unreal C++ 의 활용 능력의 향상</br>
+④ 언리얼이 제공하는 기능을 활용한 구현 및 응용 능력 향상</br>

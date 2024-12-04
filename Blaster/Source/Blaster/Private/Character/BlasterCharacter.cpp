@@ -99,10 +99,15 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::IA_Look);
 
 		// Equip
-		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::IA_Equip);
+		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Started, this, &ABlasterCharacter::IA_Equip);
 
 		// Crouch
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::IA_Crouch);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABlasterCharacter::IA_Crouch);
+
+		// Aim
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &ABlasterCharacter::IA_AimPressed);
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this,
+		                                   &ABlasterCharacter::IA_AimReleased);
 	}
 }
 
@@ -154,9 +159,7 @@ void ABlasterCharacter::IA_Look(const FInputActionValue& InputActionValue)
 
 void ABlasterCharacter::IA_Equip(const FInputActionValue& InputActionValue)
 {
-	bool bPressed = InputActionValue.Get<bool>();
-
-	if (bPressed && nullptr != Combat)
+	if (nullptr != Combat)
 	{
 		if (HasAuthority())
 		{
@@ -171,17 +174,35 @@ void ABlasterCharacter::IA_Equip(const FInputActionValue& InputActionValue)
 
 void ABlasterCharacter::IA_Crouch(const FInputActionValue& InputActionValue)
 {
-	bool bPressed = InputActionValue.Get<bool>();
-	if (true == bPressed)
+	if (bIsCrouched)
 	{
-		if (bIsCrouched)
-		{
-			UnCrouch();
-		}
-		else
-		{
-			Crouch();
-		}
+		UnCrouch();
+	}
+	else
+	{
+		Crouch();
+	}
+}
+
+inline void ABlasterCharacter::IA_AimPressed(const FInputActionValue& InputActionValue)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimPressed")));
+
+	if (nullptr != Combat)
+	{
+		//Combat->bAiming = true;
+		Combat->SetAiming(true);
+	}
+}
+
+inline void ABlasterCharacter::IA_AimReleased(const FInputActionValue& InputActionValue)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimReleased")));
+
+	if (nullptr != Combat)
+	{
+		//Combat->bAiming = false;
+		Combat->SetAiming(false);
 	}
 }
 
@@ -223,4 +244,9 @@ void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 bool ABlasterCharacter::IsWeaponEquipped()
 {
 	return (nullptr != Combat && nullptr != Combat->EquippedWeapon);
+}
+
+bool ABlasterCharacter::IsAiming()
+{
+	return (nullptr != Combat && true == Combat->bAiming);
 }

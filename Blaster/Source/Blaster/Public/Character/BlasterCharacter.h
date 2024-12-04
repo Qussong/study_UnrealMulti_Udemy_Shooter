@@ -69,11 +69,16 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> CrouchAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> AimAction;
 	
 	void IA_Move(const FInputActionValue& InputActionValue);
 	void IA_Look(const FInputActionValue& InputActionValue);
 	void IA_Equip(const FInputActionValue& InputActionValue);
 	void IA_Crouch(const FInputActionValue& InputActionValue);
+	void IA_AimPressed(const FInputActionValue& InputActionValue);
+	void IA_AimReleased(const FInputActionValue& InputActionValue);
 	
 	/* Input Secion End */
 
@@ -83,4 +88,5 @@ private:
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
+	bool IsAiming();
 };

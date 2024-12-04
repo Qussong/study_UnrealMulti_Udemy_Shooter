@@ -1,19 +1,4 @@
-# $\large\bf\color{#FFFFFF}Unreal\ Engine5\ Project$
-
-### $\large\bf\color{#CD5C5C}프로젝트\ 명$
-
-Blaster
-
-### $\large\bf\color{#CD5C5C}프로젝트\ 인원$
-
-1명 (김기훈)
-
-### $\large\bf\color{#CD5C5C}목적$
-
-① Unreal Engine5 의 활용법 학습</br>
-② 게임 엔진의 구조와 흐름에 대한 이해</br>
-③ Unreal Blueprint 와 Unreal C++ 의 활용 능력의 향상</br>
-④ 기능 구현 및 응용 능력 향상</br>
+# $\large\bf\color{#FFFFFF}Blaster$
 
 ### $\large\bf\color{#CD5C5C}결과물$
 
@@ -53,3 +38,18 @@ $\color{#4F4F4F}(\ ↓ 이미지\ 클릭시\ 해당\ 페이지로\ 이동합니�
 </a>
 </br>
 -->
+
+### $\large\bf\color{#CD5C5C}프로젝트\ 명$
+
+Blaster
+
+### $\large\bf\color{#CD5C5C}프로젝트\ 인원$
+
+1명 (김기훈)
+
+### $\large\bf\color{#CD5C5C}목적$
+
+① Unreal Engine5 의 활용법 학습</br>
+② 게임 엔진의 구조와 흐름에 대한 이해</br>
+③ Unreal Blueprint 와 Unreal C++ 의 활용 능력의 향상</br>
+④ 기능 구현 및 응용 능력 향상</br>

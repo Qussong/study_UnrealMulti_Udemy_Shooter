@@ -186,7 +186,7 @@ void ABlasterCharacter::IA_Crouch(const FInputActionValue& InputActionValue)
 
 inline void ABlasterCharacter::IA_AimPressed(const FInputActionValue& InputActionValue)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimPressed")));
+	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimPressed")));
 
 	if (nullptr != Combat)
 	{
@@ -197,7 +197,7 @@ inline void ABlasterCharacter::IA_AimPressed(const FInputActionValue& InputActio
 
 inline void ABlasterCharacter::IA_AimReleased(const FInputActionValue& InputActionValue)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimReleased")));
+	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimReleased")));
 
 	if (nullptr != Combat)
 	{

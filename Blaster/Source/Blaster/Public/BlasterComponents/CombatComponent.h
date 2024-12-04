@@ -37,4 +37,7 @@ private:
 
 	UPROPERTY(Replicated)
 	bool bAiming;
+
+	float YawOffset;
+	float Lean;
 };

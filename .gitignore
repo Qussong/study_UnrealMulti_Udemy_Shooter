@@ -118,7 +118,7 @@ Blaster/**
 !Blaster/Content/_Blaster/**
 !Blaster/Source/**
 !Blaster/Plugins/**
-!Blaster/MenuSystem.uproject
+!Blaster/Blaster.uproject
 
 # Blaster/Content/_Blaster/Maps/
 

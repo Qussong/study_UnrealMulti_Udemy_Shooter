@@ -15,6 +15,7 @@
 #include "Weapon/Weapon.h"
 #include "BlasterComponents/CombatComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ABlasterCharacter::ABlasterCharacter()
 {
@@ -25,8 +26,8 @@ ABlasterCharacter::ABlasterCharacter()
 	bUseControllerRotationRoll = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 350.0f, 0.0f);
+	//GetCharacterMovement()->bUseControllerDesiredRotation = true;
+	//GetCharacterMovement()->RotationRate = FRotator(0.0f, 350.0f, 0.0f);
 
 	GetCharacterMovement()->JumpZVelocity = 1500.f;
 	GetCharacterMovement()->GravityScale = 3.f;
@@ -74,6 +75,8 @@ void ABlasterCharacter::BeginPlay()
 void ABlasterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	AimOffset(DeltaTime);
 }
 
 void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -214,6 +217,45 @@ inline void ABlasterCharacter::IA_AimReleased(const FInputActionValue& InputActi
 void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
 {
 	Combat->EquipWeapon(OverlappingWeapon);
+}
+
+void ABlasterCharacter::AimOffset(float DeltaTime)
+{
+	// Only Affect when character stop
+
+	if (Combat && nullptr == Combat->EquippedWeapon)
+	{
+		return;
+	}
+
+	FVector Velocity = GetVelocity();
+	Velocity.Z = 0.f;
+	float Speed = Velocity.Size();
+	bool bIsInAir = GetCharacterMovement()->IsFalling();
+
+	if (0.f == Speed && false == bIsInAir) // Standing Still, Not Jumping
+	{
+		FRotator CurrentAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
+		FRotator DeltaAimRotation = UKismetMathLibrary::NormalizedDeltaRotator(CurrentAimRotation, StartingAimRotation);
+		AO_Yaw = DeltaAimRotation.Yaw;
+		bUseControllerRotationYaw = false;
+	}
+
+	if (Speed > 0.f || true == bIsInAir) // Running or Jumping
+	{
+		StartingAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
+		AO_Yaw = 0.f;
+		bUseControllerRotationYaw = true;
+	}
+
+	AO_Pitch = GetBaseAimRotation().Pitch;
+	if (AO_Pitch > 90.f && false == IsLocallyControlled())
+	{
+		// map pitch from (270 ~ 360) to (-90 ~ 0)
+		FVector2D InRange(270.f, 360.f);
+		FVector2D OutRange(-90.f, 0.f);
+		AO_Pitch = FMath::GetMappedRangeValueClamped(InRange, OutRange, AO_Pitch);
+	}
 }
 
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)

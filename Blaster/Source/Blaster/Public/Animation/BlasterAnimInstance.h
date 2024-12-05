@@ -51,4 +51,10 @@ private:
 	FRotator DeltaRotation;
 	FRotator CharacterRotationLastFrame;
 	FRotator CharacterRotationCurFrame;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+	float AO_Yaw;	// Aim Offset Yaw
+
+	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+	float AO_Pitch;	// Aim Offset Pitch
 };

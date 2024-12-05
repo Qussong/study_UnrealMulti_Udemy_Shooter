@@ -14,6 +14,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Weapon/Weapon.h"
 #include "BlasterComponents/CombatComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ABlasterCharacter::ABlasterCharacter()
 {
@@ -30,7 +31,7 @@ ABlasterCharacter::ABlasterCharacter()
 	GetCharacterMovement()->JumpZVelocity = 1500.f;
 	GetCharacterMovement()->GravityScale = 3.f;
 	//GetCharacterMovement()->AirControl = 0.35f;
-	//GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	//GetCharacterMovement()->MaxWalkSpeed = 600.f;
 	//GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	//GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	//GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
@@ -53,6 +54,9 @@ ABlasterCharacter::ABlasterCharacter()
 
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	Combat->SetIsReplicated(true);
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Ignore);
 }
 
 void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -187,7 +191,7 @@ void ABlasterCharacter::IA_Crouch(const FInputActionValue& InputActionValue)
 
 inline void ABlasterCharacter::IA_AimPressed(const FInputActionValue& InputActionValue)
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimPressed")));
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimPressed")));
 
 	if (nullptr != Combat)
 	{
@@ -198,7 +202,7 @@ inline void ABlasterCharacter::IA_AimPressed(const FInputActionValue& InputActio
 
 inline void ABlasterCharacter::IA_AimReleased(const FInputActionValue& InputActionValue)
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimReleased")));
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString(TEXT("AimReleased")));
 
 	if (nullptr != Combat)
 	{

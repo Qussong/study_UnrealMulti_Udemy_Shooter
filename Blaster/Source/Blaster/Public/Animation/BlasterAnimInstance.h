@@ -7,6 +7,7 @@
 #include "BlasterAnimInstance.generated.h"
 
 class ABlasterCharacter;
+class AWeapon;
 
 /**
  * 
@@ -36,6 +37,9 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
 	bool bWeaponEquipped;
 
+	
+	TObjectPtr<AWeapon> EquippedWeapon;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
 	bool bIsCrouched;
 
@@ -47,7 +51,7 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
 	float Lean;
-
+	
 	FRotator DeltaRotation;
 	FRotator CharacterRotationLastFrame;
 	FRotator CharacterRotationCurFrame;
@@ -57,4 +61,7 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
 	float AO_Pitch;	// Aim Offset Pitch
+
+	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+	FTransform LeftHandTransform;
 };

@@ -27,17 +27,18 @@ ABlasterCharacter::ABlasterCharacter()
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	//GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	//GetCharacterMovement()->RotationRate = FRotator(0.0f, 350.0f, 0.0f);
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 
 	GetCharacterMovement()->JumpZVelocity = 1500.f;
 	GetCharacterMovement()->GravityScale = 3.f;
 	//GetCharacterMovement()->AirControl = 0.35f;
-	//GetCharacterMovement()->MaxWalkSpeed = 600.f;
+	//GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	//GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	//GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	//GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 	GetCharacterMovement()->SetWalkableFloorAngle(60.f);
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+	GetCharacterMovement()->MaxWalkSpeedCrouched = 300.f;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -102,7 +103,7 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ABlasterCharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
@@ -216,6 +217,18 @@ inline void ABlasterCharacter::IA_AimReleased(const FInputActionValue& InputActi
 	{
 		//Combat->bAiming = false;
 		Combat->SetAiming(false);
+	}
+}
+
+void ABlasterCharacter::Jump()
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+	}
+	else
+	{
+		Super::Jump();
 	}
 }
 

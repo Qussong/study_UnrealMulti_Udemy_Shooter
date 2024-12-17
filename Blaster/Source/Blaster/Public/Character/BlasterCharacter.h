@@ -80,6 +80,7 @@ private:
 	void IA_Crouch(const FInputActionValue& InputActionValue);
 	void IA_AimPressed(const FInputActionValue& InputActionValue);
 	void IA_AimReleased(const FInputActionValue& InputActionValue);
+	virtual void Jump() override;
 	
 	/* Input Secion End */
 

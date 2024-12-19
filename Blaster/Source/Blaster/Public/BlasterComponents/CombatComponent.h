@@ -17,9 +17,9 @@ class BLASTER_API UCombatComponent : public UActorComponent
 public:
 	UCombatComponent();
 	friend ABlasterCharacter;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void EquipWeapon(AWeapon* WeaponToEquip);
 
@@ -34,6 +34,12 @@ protected:
 	void OnRep_EquippedWeapon();
 
 	void FireButtonPressed(bool bPressed);
+
+	UFUNCTION(Server, Reliable)
+	void ServerFire();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastFire();
 
 private:
 	TObjectPtr<ABlasterCharacter> Character;

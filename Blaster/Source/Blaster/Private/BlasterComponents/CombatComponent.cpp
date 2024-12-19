@@ -18,6 +18,13 @@ UCombatComponent::UCombatComponent()
 	AimWalkSpeed = 350.f;
 }
 
+void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
+	DOREPLIFETIME(UCombatComponent, bAiming);
+}
 
 void UCombatComponent::BeginPlay()
 {
@@ -61,18 +68,40 @@ void UCombatComponent::OnRep_EquippedWeapon()
 void UCombatComponent::FireButtonPressed(bool bPressed)
 {
 	bFireButtonPressed = bPressed;
-	/*if (bFireButtonPressed)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Fire"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("End"));
-	}*/
 
-	if (nullptr != Character && bPressed)
+	if (true == bFireButtonPressed)
+	{
+		ServerFire();
+	}
+}
+
+void UCombatComponent::ServerFire_Implementation()
+{
+	/*if (nullptr == EquippedWeapon)
+	{
+		return;
+	}
+	
+	if (nullptr != Character)
 	{
 		Character->PlayFireMontage(bAiming);
+		EquippedWeapon->Fire();
+	}*/
+
+	MulticastFire();
+}
+
+void UCombatComponent::MulticastFire_Implementation()
+{
+	if (nullptr == EquippedWeapon)
+	{
+		return;
+	}
+	
+	if (nullptr != Character)
+	{
+		Character->PlayFireMontage(bAiming);
+		EquippedWeapon->Fire();
 	}
 }
 
@@ -80,14 +109,6 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                      FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
-void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
-	DOREPLIFETIME(UCombatComponent, bAiming);
 }
 
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)

@@ -33,6 +33,8 @@ protected:
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
 
+	void FireButtonPressed(bool bPressed);
+
 private:
 	TObjectPtr<ABlasterCharacter> Character;
 
@@ -50,4 +52,6 @@ private:
 
 	float YawOffset;
 	float Lean;
+
+	bool bFireButtonPressed;
 };

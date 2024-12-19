@@ -15,6 +15,7 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class UWidgetComponent;
+class UAnimMontage;
 
 UCLASS()
 class BLASTER_API ABlasterCharacter : public ACharacter
@@ -27,6 +28,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
+
+	void PlayFireMontage(bool bAiming);
 
 protected:
 	virtual void BeginPlay() override;
@@ -73,6 +76,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> AimAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> FireAction;
 	
 	void IA_Move(const FInputActionValue& InputActionValue);
 	void IA_Look(const FInputActionValue& InputActionValue);
@@ -81,6 +87,8 @@ private:
 	void IA_AimPressed(const FInputActionValue& InputActionValue);
 	void IA_AimReleased(const FInputActionValue& InputActionValue);
 	virtual void Jump() override;
+	void IA_FirePressed(const FInputActionValue& InputActionValue);
+	void IA_FireReleased(const FInputActionValue& InputActionValue);
 	
 	/* Input Secion End */
 
@@ -96,6 +104,9 @@ private:
 
 	ETurningInPlace TurningInPlace;
 	void TurnInPlace(float DeltaTime);
+
+	UPROPERTY(EditAnywhere, Category="Combat")
+	TObjectPtr<UAnimMontage> FireWeaponMontage;
 
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);

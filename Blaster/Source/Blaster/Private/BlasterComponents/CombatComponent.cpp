@@ -58,6 +58,24 @@ void UCombatComponent::OnRep_EquippedWeapon()
 	}
 }
 
+void UCombatComponent::FireButtonPressed(bool bPressed)
+{
+	bFireButtonPressed = bPressed;
+	/*if (bFireButtonPressed)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Fire"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("End"));
+	}*/
+
+	if (nullptr != Character && bPressed)
+	{
+		Character->PlayFireMontage(bAiming);
+	}
+}
+
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                      FActorComponentTickFunction* ThisTickFunction)
 {
